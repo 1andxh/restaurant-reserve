@@ -1,0 +1,13 @@
+{
+    "username": "john_doe",
+    "password": "mySecurePassword123",
+    "email": "john@example.com",
+    "first_name": "John",
+    "last_name": "Doe"
+}
+
+{
+    "username": "mukasigh",
+    "password": "muksunder",
+    "email": "muks@example.com",
+}
