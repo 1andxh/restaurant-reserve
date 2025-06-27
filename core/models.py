@@ -1,12 +1,13 @@
 from django.db import models
 from django.core.validators import MinLengthValidator, MaxLengthValidator
-
+from users.models import User
 class Restaurant(models.Model):
     class Restaurant_type(models.TextChoices):
         FASTFOOD = 'FF', 'Fast Food'
         ASIAN = 'AS', 'Asian'
         ITALIAN = 'IT', 'Italian'
         GHANAIAN = 'GH', 'Ghanaian'
+    owner = models.ForeignKey(User, on_delete=models.CASCADE)
     name = models.CharField(max_length=100, null=False, blank=False)
     address = models.CharField(max_length=100)
     contact = models.CharField(validators=[MinLengthValidator(10), MaxLengthValidator(10)])

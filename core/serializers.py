@@ -7,4 +7,8 @@ class RestaurantSerializer(serializers.ModelSerializer):
         feilds = '__all__'
         read_only_feilds = ['id', 'created_at']
 
+class UpdateRestaurantSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Restaurant
+        fields = '__all__'
         
