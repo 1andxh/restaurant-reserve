@@ -14,7 +14,7 @@ class Restaurant(models.Model):
     email = models.EmailField(unique=True, blank=False)
     date_opened = models.DateField()
     working_hours = models.CharField(max_length=20, default='09:00am - 10:00pm')
-    type = models.CharField(max_length=2, choices=Restaurant_type.choices, default='')
+    type = models.CharField(max_length=2, choices=Restaurant_type.choices, null=True, blank=True)
     created_at = models.DateTimeField(auto_now=True)
     updated_at = models.DateTimeField(auto_now_add=True)
 

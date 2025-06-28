@@ -6,7 +6,7 @@ from core.models import Restaurant
 from rest_framework.response import Response
 
 class CreateRestaurant(generics.CreateAPIView):
-    serializer_class = RestaurantSerializer
+    serializer_class = RestaurantSerializer 
     permission_classes = [IsAuthenticated]
 
     def get_queryset(self):

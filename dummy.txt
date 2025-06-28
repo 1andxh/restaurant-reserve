@@ -11,3 +11,13 @@
     "password": "muksunder",
     "email": "muks@example.com",
 }
+
+{
+  "name": "Mukasi (Annex)",
+  "address": "25 Danquah St, Kumasi, Ghana",
+  "contact": "0244567890",
+  "email": "info@mukasi.gh",
+  "date_opened": "2025-05-15",
+  "working_hours": "08:00am - 11:00pm",
+  "type": "GH"
+}
