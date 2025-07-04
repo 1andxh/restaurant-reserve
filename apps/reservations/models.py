@@ -11,13 +11,15 @@ class Reservations(models.Model):
     guest_name = models.CharField(max_length=100, null=False, blank=False)
     guest_phone = models.CharField(validators=[MinLengthValidator(10), MaxLengthValidator(10)], null=False, blank=False)
     guest_email = models.EmailField()
-    reservation_date = models.DateField()
-    reservation_time = models.TimeField()
-    guest_size = models.PositiveIntegerField(null=False, blank=False)
+    reservation_date = models.DateField(null=False,blank=False)
+    reservation_time = models.TimeField(null=False, blank=False)
+    party_size = models.PositiveIntegerField(null=False, blank=False)
     special_note = models.TextField(max_length=100)
-    status = models.CharField(max_length=10, choices=StatusChoices.choices, null=False, blank=False)
+    status = models.CharField(max_length=10, choices=StatusChoices.choices, null=False, blank=False, default=StatusChoices.PENDING)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
     def __str__(self):
         return f"Reservation for {self.guest_name}"
+    
+

@@ -1,5 +1,6 @@
 from rest_framework import serializers
 from reservations.models import Reservations
+from datetime import timezone as tz
 
 class CreateReservationSerializer(serializers.ModelSerializer):
     class Meta:
@@ -9,12 +10,12 @@ class CreateReservationSerializer(serializers.ModelSerializer):
             'guest_name',
             'guest_phone',
             'guest_email',
-            'guest_size'
+            'party_size',
             'reservation_date',
             'reservation_time',
             'special_note',
             'status',
-            'created_at' 
+            'created_at' ,
             'updated_at'      
         ]
         read_only_fields = [
@@ -22,17 +23,25 @@ class CreateReservationSerializer(serializers.ModelSerializer):
             'created_at',
             'updated_at'
         ]
-        extra_kwargs = {
-            'guest_name': {'required' : True},
-            'guest_phone': {'required' : True},
-            'guest_size': {'required' : True},
-            'reservation_date' : {'required' : True},
-            'reservation_time' : {'required' : True}
-        }
-    def validate_guest_size(self, value):
-        if value <= 0:
-            raise serializers.ValidationError('Cannot make reservation with no guests!')
+
+    def validate_part_size(self, value):
+        if value < 1:
+            raise serializers.ValidationError ('Party size must be at least 1')
+        if value > 20 :
+            raise serializers.ValidationError('Party cannot exceed 20 people')
         return value
     
+    def validate_reservation_date(self, value):
+        if value < tz.now().date():
+            raise serializers.ValidationError('Enter')
+
+
+    def create(self, validated_data):
+        if 'status' not in validated_data:
+            validated_data['status'] = 'Pending'
+
+        reservation = Reservations.objects.create(**validated_data)
+        return reservation
+        
 
         
