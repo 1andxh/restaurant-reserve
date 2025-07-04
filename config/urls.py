@@ -28,4 +28,5 @@ urlpatterns = [
     # path('api/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
     path('', include('users.urls')),
     path('', include('core.urls')),
+    path('', include('apps.reservations.urls')),
 ]

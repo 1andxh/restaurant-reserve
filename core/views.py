@@ -1,12 +1,12 @@
-from rest_framework import generics, status
+from rest_framework import generics, status, viewsets, permissions
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.decorators import api_view, permission_classes
-from core.serializers import RestaurantSerializer, UpdateRestaurantSerializer
-from core.models import Restaurant
+from .serializers import CreateRestaurantSerializer, UpdateRestaurantSerializer, ViewRestaurantSerializer
+from .models import Restaurant
 from rest_framework.response import Response
 
 class CreateRestaurant(generics.CreateAPIView):
-    serializer_class = RestaurantSerializer 
+    serializer_class = CreateRestaurantSerializer 
     permission_classes = [IsAuthenticated]
 
     def get_queryset(self):
@@ -38,3 +38,8 @@ class UpdateRestaurant(generics.UpdateAPIView):
 
     # def update(self, request, *args, **kwargs):
     #     restaurant = self.get_object()
+
+class ViewRestaurantViewset(viewsets.ModelViewSet):
+    serializer_class = ViewRestaurantSerializer
+    queryset = Restaurant.objects.all()
+    permission_classes = [permissions.AllowAny]

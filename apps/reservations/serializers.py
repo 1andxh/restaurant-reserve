@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from reservations.models import Reservations
+from .models import Reservations
 from datetime import timezone as tz
 
 class CreateReservationSerializer(serializers.ModelSerializer):

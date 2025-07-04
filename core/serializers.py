@@ -1,7 +1,7 @@
 from rest_framework import serializers
-from core.models import Restaurant
+from .models import Restaurant
 
-class RestaurantSerializer(serializers.ModelSerializer):
+class CreateRestaurantSerializer(serializers.ModelSerializer):
     class Meta:
         model = Restaurant
         fields = [
@@ -30,4 +30,14 @@ class UpdateRestaurantSerializer(serializers.ModelSerializer):
             'working_hours', 
             'type'
         ]
-        
+
+class ViewRestaurantSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Restaurant
+        fields = [
+            'name',
+            'address',
+            'contact',
+            'type',
+            'working_hours',
+        ]

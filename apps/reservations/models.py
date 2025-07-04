@@ -23,3 +23,4 @@ class Reservations(models.Model):
         return f"Reservation for {self.guest_name}"
     
 
+# confirmed and cancelled should be viewed when the user wants to check their bookings, this can be done by a simple lookup by phone_number
