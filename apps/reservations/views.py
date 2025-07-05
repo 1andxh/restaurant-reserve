@@ -4,30 +4,18 @@ from .serializers import CreateReservationSerializer
 from rest_framework.response import Response
 from .models import Restaurant
 from django.shortcuts import get_object_or_404
+from django.db import transaction 
+import traceback
 class CreateReservation(generics.CreateAPIView):
     serializer_class = CreateReservationSerializer
     permission_classes = [permissions.AllowAny]
 
+    @transaction.atomic()
     def create(self, request, *args, **kwargs):
         try: 
-            restaurant_id = self.kwargs.get('restaurant_id')
-            restaurant = get_object_or_404(Restaurant, id=restaurant_id)
-            try:
-                if not restaurant_id:
-                    return Response({
-                        'error' : 'Restaurant_id not provided',
-                    },
-                    status=status.HTTP_400_BAD_REQUEST
-                    )
-            except Restaurant.DoesNotExist:
-                return Response({
-                    'error' : 'Restaurant not found'
-                },
-                status=status.HTTP_404_NOT_FOUND
-                )
             serializer = self.get_serializer(data=request.data)
             serializer.is_valid(raise_exception=True)
-            reservation = serializer.save(restaurant=restaurant)
+            reservation = serializer.save()
             return Response({
                 'message' : 'Reservation created successfully, proceed to check booking status.',
                 'reservation' : serializer.data,
@@ -38,7 +26,7 @@ class CreateReservation(generics.CreateAPIView):
         except Exception as e:
             return Response({
                 'error' : 'An error occured while creating reservation',
-                'details' : str(e)
+                'details' : f'{str(e)} : \ntraceback {traceback.print_exc()}'
             },
             status=status.HTTP_500_INTERNAL_SERVER_ERROR)
         

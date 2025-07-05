@@ -9,7 +9,7 @@ class Reservations(models.Model):
         CANCELLED = 'Cancelled', 'Cancelled'
     restaurant = models.ForeignKey(Restaurant, on_delete=models.CASCADE)
     guest_name = models.CharField(max_length=100, null=False, blank=False)
-    guest_phone = models.CharField(validators=[MinLengthValidator(10), MaxLengthValidator(10)], null=False, blank=False)
+    guest_phone = models.CharField(validators=[MinLengthValidator(10), MaxLengthValidator(13)], null=False, blank=False)
     guest_email = models.EmailField()
     reservation_date = models.DateField(null=False,blank=False)
     reservation_time = models.TimeField(null=False, blank=False)

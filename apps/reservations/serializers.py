@@ -1,6 +1,6 @@
 from rest_framework import serializers
 from .models import Reservations
-from datetime import timezone as tz
+from datetime import date
 
 class CreateReservationSerializer(serializers.ModelSerializer):
     class Meta:
@@ -32,9 +32,11 @@ class CreateReservationSerializer(serializers.ModelSerializer):
         return value
     
     def validate_reservation_date(self, value):
-        if value < tz.now().date():
-            raise serializers.ValidationError('Enter')
-
+        if not value:
+            raise serializers.ValidationError('Date cannot be empty!')
+        if value < date.today():
+            raise serializers.ValidationError('Date must be current or future')
+        return value
 
     def create(self, validated_data):
         if 'status' not in validated_data:
