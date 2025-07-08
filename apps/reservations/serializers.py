@@ -23,8 +23,11 @@ class CreateReservationSerializer(serializers.ModelSerializer):
             'created_at',
             'updated_at'
         ]
+        extra_kwargs = {
+            'restaurant_id' : {'required' : False}
+        }
 
-    def validate_part_size(self, value):
+    def validate_party_size(self, value):
         if value < 1:
             raise serializers.ValidationError ('Party size must be at least 1')
         if value > 20 :

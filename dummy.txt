@@ -21,3 +21,13 @@
   "working_hours": "08:00am - 11:00pm",
   "type": "GH"
 }
+
+{
+    "guest_name": "Ama Serwaa",
+    "guest_phone": "0245678901",
+    "guest_email": "ama.serwaa@example.com",
+    "party_size": 4,
+    "reservation_date": "2025-07-10",
+    "reservation_time": "18:30:00",
+    "special_note": "Please arrange a table near the window. It’s a birthday dinner."
+}

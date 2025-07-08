@@ -12,16 +12,24 @@ class CreateReservation(generics.CreateAPIView):
 
     @transaction.atomic()
     def create(self, request, *args, **kwargs):
+        restaurant_id = self.kwargs.get('restaurant_id')
         try: 
+            Restaurant.objects.get(id=restaurant_id)
             serializer = self.get_serializer(data=request.data)
             serializer.is_valid(raise_exception=True)
-            reservation = serializer.save()
+            reservation = serializer.save(restaurant_id=restaurant_id)
             return Response({
                 'message' : 'Reservation created successfully, proceed to check booking status.',
                 'reservation' : serializer.data,
                 'reservation_id' : reservation.id
             },
             status=status.HTTP_201_CREATED
+            )
+        except Restaurant.DoesNotExist:
+            return Response({
+                'error' : 'Not found'
+            },
+            status=status.HTTP_404_NOT_FOUND
             )
         except Exception as e:
             return Response({
