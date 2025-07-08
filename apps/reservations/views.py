@@ -1,10 +1,11 @@
 from django.shortcuts import render
 from rest_framework import generics, permissions, status
-from .serializers import CreateReservationSerializer
+from .serializers import CreateReservationSerializer, UpdateReservationStatusSerializer
 from rest_framework.response import Response
 from .models import Restaurant
 from django.shortcuts import get_object_or_404
-from django.db import transaction 
+from django.db import transaction
+from models import Reservations 
 import traceback
 class CreateReservation(generics.CreateAPIView):
     serializer_class = CreateReservationSerializer
@@ -37,7 +38,14 @@ class CreateReservation(generics.CreateAPIView):
                 'details' : f'{str(e)} : \ntraceback {traceback.print_exc()}'
             },
             status=status.HTTP_500_INTERNAL_SERVER_ERROR)
-        
+
+class UpdateReservationStatus(generics.RetrieveUpdateAPIView):
+    queryset = Reservations.objects.get()
+    serializer_class = UpdateReservationStatusSerializer
+    permission_classes = [permissions.IsAuthenticated]
+
+    def perform_update(self, serializer):
+        return super().perform_update(serializer)
 
 class ViewReservation(generics.CreateAPIView):
 
@@ -51,4 +59,5 @@ guest check their bookings to confirm if the reservation was cancelled or approv
 - i think the status should be in the booking part, the completed part should only be on the admin side
 - a reservation is completed only when that day has passed
 -- views restaurants to able to make reservations
+-- to get bookings, lookup by restaurant name and must be owner
 '''

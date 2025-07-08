@@ -48,5 +48,14 @@ class CreateReservationSerializer(serializers.ModelSerializer):
         reservation = Reservations.objects.create(**validated_data)
         return reservation
         
+class UpdateReservationStatusSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Reservations
+        fields = '__all__'
+class ViewReservationSerializer(serializers.ModelSerializer):
+    pass
+
+
+
 
         
