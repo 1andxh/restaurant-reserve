@@ -40,24 +40,46 @@ class CreateReservation(generics.CreateAPIView):
             status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 class UpdateReservationStatus(generics.RetrieveUpdateAPIView):
+    """
+        restaurant admins -- this view allows users update reservation status once 
+        reservation has been made
+    """
     queryset = Reservations.objects.get()
     serializer_class = UpdateReservationStatusSerializer
     permission_classes = [permissions.IsAuthenticated]
 
+    """
+    inheriting BasePermissions--has_object_permission(self, request, view, object,) will allow the user make changes to a specific model instance
+    --but how do i implement this...
+    """
+
     def perform_update(self, serializer):
+
         return super().perform_update(serializer)
 
 class ViewReservation(generics.CreateAPIView):
-
+    """
+    once visitors hit this end point it should display their reservation with an updated status choice
+    they can check on their reservation by doing a lookup on the reservations associated with their phone_number
+    """
     pass
     
+"""
+also once the status is changed to cancelled it must be deleted from the db; TODO
+"""
+
+
+
+
 
 # TODO : 
 '''
-- once you make a reservation, it goes to pending since the admin hasn't approved it yet, 
+-- once you make a reservation, it goes to pending since the admin hasn't approved it yet, 
 guest check their bookings to confirm if the reservation was cancelled or approved
-- i think the status should be in the booking part, the completed part should only be on the admin side
-- a reservation is completed only when that day has passed
+-- i think the status should be in the booking part, the completed part should only be on the admin side
+-- a reservation is completed only when that day has passed
 -- views restaurants to able to make reservations
--- to get bookings, lookup by restaurant name and must be owner
+
+-- to get bookings, that endpoint will reference the owner and list all reservations associated with
+-- implement sms/email notifications after successful reservation (on both ends)
 '''
