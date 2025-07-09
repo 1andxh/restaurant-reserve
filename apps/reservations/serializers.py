@@ -51,9 +51,20 @@ class CreateReservationSerializer(serializers.ModelSerializer):
 class UpdateReservationStatusSerializer(serializers.ModelSerializer):
     class Meta:
         model = Reservations
-        fields = '__all__'
+        fields = ['status']
 class ViewReservationSerializer(serializers.ModelSerializer):
-    pass
+    class Meta:
+        model = Reservations
+        fields = [
+            'guest_name',
+            'guest_phone',
+            'guest_email',
+            'party_size',
+            'reservation_date',
+            'reservation_time',
+            'special_note',
+            'status'
+        ]
 
 
 

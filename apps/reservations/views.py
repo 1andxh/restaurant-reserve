@@ -1,6 +1,7 @@
 from django.shortcuts import render
 from rest_framework import generics, permissions, status
-from .serializers import CreateReservationSerializer, UpdateReservationStatusSerializer
+from .permissions import IsRestaurantOwner
+from .serializers import CreateReservationSerializer, UpdateReservationStatusSerializer, ViewReservationSerializer
 from rest_framework.response import Response
 from .models import Restaurant
 from django.shortcuts import get_object_or_404
@@ -44,25 +45,33 @@ class UpdateReservationStatus(generics.RetrieveUpdateAPIView):
         restaurant admins -- this view allows users update reservation status once 
         reservation has been made
     """
-    queryset = Reservations.objects.get()
     serializer_class = UpdateReservationStatusSerializer
-    permission_classes = [permissions.IsAuthenticated]
+    permission_classes = [permissions.IsAuthenticated, IsRestaurantOwner]
 
     """
     inheriting BasePermissions--has_object_permission(self, request, view, object,) will allow the user make changes to a specific model instance
     --but how do i implement this...
     """
-
+    def get_queryset(self):
+        restaurant_id = self.kwargs.get('restaurant_id')
+        return Reservations.objects.filter(
+            restaurant_id=restaurant_id,
+            restaurant__owner=self.request.user
+            )
+  
     def perform_update(self, serializer):
+        serializer.save()
 
-        return super().perform_update(serializer)
 
-class ViewReservation(generics.CreateAPIView):
+class ViewReservation(generics.ListAPIView):
     """
     once visitors hit this end point it should display their reservation with an updated status choice
     they can check on their reservation by doing a lookup on the reservations associated with their phone_number
     """
-    pass
+    serializer_class = ViewReservationSerializer
+    permission_classes = [permissions.IsAuthenticatedOrReadOnly|IsRestaurantOwner]
+
+    
     
 """
 also once the status is changed to cancelled it must be deleted from the db; TODO
