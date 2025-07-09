@@ -66,6 +66,11 @@ class ViewReservationSerializer(serializers.ModelSerializer):
             'status'
         ]
 
+    def validate_phone_number(self, value):
+        if value is None:
+            raise serializers.ValidationError('Phone number is required')
+        return value
+
 
 
 

@@ -70,6 +70,17 @@ class ViewReservation(generics.ListAPIView):
     """
     serializer_class = ViewReservationSerializer
     permission_classes = [permissions.IsAuthenticatedOrReadOnly|IsRestaurantOwner]
+    lookup_url_kwarg = 'phone_number'
+
+    def get_queryset(self):
+        queryset = Reservations.objects.all()
+        phone_number = self.request.query_params.get('phone_number')
+        if phone_number is None:
+            queryset = queryset.filter(guest_phone=phone_number)
+        else:
+            return Reservations.objects.none()    
+        return queryset
+
 
     
     
